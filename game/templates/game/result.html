@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Result</title>
+	</head>
+	<body>
+		<h1>Result</h1>
+		<p>Your move: {{ player_move }}</p>
+		<p>Opponent's move: {{ opponent_move }}</p>
+		<p>Outcome: {{ outcome }}</p>
+		<a href="{% url 'index' %}">Play Again</a>
+	</body>
+</html>
