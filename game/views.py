@@ -4,43 +4,37 @@ import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import LabelEncoder
 
-# Initialize moves
 moves = ['rock', 'paper', 'scissors']
 
-# Initialize data storage (this would typically be a database)
 data = {
     'player_move': [],
     'opponent_move': [],
 }
 
-# Label encoder
 le = LabelEncoder()
 le.fit(moves)
 
-# Function to determine outcome
 def determine_outcome(player, opponent):
     if player == opponent:
         return 'draw'
     elif (player == 'rock' and opponent == 'scissors') or \
-         (player == 'paper' and opponent == 'rock') or \
+        (player == 'paper' and opponent == 'rock') or \
          (player == 'scissors' and opponent == 'paper'):
         return 'win'
     else:
         return 'lose'
-
-# Function to get the model's move
+    
 def get_model_move(model, last_player_move):
     if not data['player_move']:
         return random.choice(moves)
     else:
-        features = pd.DataFrame({'player_move_encoded': [le.transform([last_player_move])[0]]})
-        return model.predict(features)[0]
-
-# Index view
+        features = pd.DataFrame({'player_move': [last_player_move]})
+        features['plater_move_encoded'] = le.transform(features['player_move'])
+        return model.predict(features[['player_move_encoded']])[0]
+    
 def index(request):
     return render(request, 'game/index.html')
 
-# Play view
 def play(request):
     if request.method == 'POST':
         player_move = request.POST.get('move')
